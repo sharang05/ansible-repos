@@ -1,0 +1,109 @@
+
+[local]
+control ansible_connection=local
+
+
+ansible -i hosts-dev --list-hosts all
+
+set ansible configuration file
+# ansible.cfg
+
+[defaults]
+inventory = ./hosts-dev
+
+
+# When configuration file is set
+ansible --list-hosts all
+
+
+
+
+export ANSIBLE_GATHERING= False
+ansible -m shell -a uptime -i inventory all
+ansible-playbook -i inventory playbook.yml -vv
+ansible node00 -m copy -a "src=/etc/resolv.conf dest=/tmp/resolv.conf" -i inventory
+
+$ ansible -m ping all
+$ ansible –a ‘cat /etc/hosts’ all
+$ export ANSIBLE_GATHERING=explicit
+$ ansible-playbook playbook.yml
+
+shell-script.sh
+export ANSIBLE_GATHERING=explicit
+ansible -m ping all
+ansible -a 'cat /etc/hosts' all
+ansible-playbook playbook.yml
+
+
+
+---
+- hosts: all
+  tasks:
+    - shell: cat /etc/redhat-release
+	
+ansible -a "hostname" -i inventory all
+ansible node00 -m copy -a "src=/etc/resolv.conf dest=/tmp/resolv.conf" -i inventory
+
+
+**********************************
+******Inventory file format*******
+**********************************
+[web_servers]
+lamp-web ansible_host=172.20.1.100  ansible_connection=ssh ansible_user=john ansible_password=john
+[db_servers]
+lamp-db ansible_host=172.20.1.101  ansible_connection=ssh ansible_user=maria ansible_password=maria
+
+web1 ansible_host=172.20.1.100 ansible_user=maria ansible_ssh_private_key_file=/some-path/private-key
+lamp-db ansible_host=172.20.1.101 ansible_user=maria mysqlservice=mysqld mysql_port=3306 dbname=ecomdb dbuser=ecomuser dbpassword=ecompassword
+lamp-web ansible_host=172.20.1.100 ansible_user=john httpd_port=80 repository=https://github.com/kodekloudhub/learning-app-ecommerce.git
+
+
+
+
+
+****************************************
+******Ansible Configuration Files*******
+****************************************
+
+/etc/ansible/ansible.cfg
+
+[defaults]
+inventory = /etc/ansible/hosts
+log_path = /var/log/ansible.log
+library = /usr/share/my_modules/
+roles_path = /etc/ansible/roles
+action_plugins = /usr/share/ansible/plugins/action
+gathering = implicit
+# SSH timeout
+timeout = 10
+forks = 5
+[inventory]
+enable_plugins = host_list, virtualbox, yaml, constructed
+
+
+********************************************
+******Ansible Configuration Variables*******
+********************************************
+
+$ANSIBLE_GATHERING=explicit ansible-playbook playbook.yml
+
+$ export ANSIBLE_GATHERING=explicit
+$ ansible-playbook playbook.yml
+
+/opt/web-playbooks/ansible.cfg
+gathering = explicit
+
+
+********************************************
+******View Configuration********************
+********************************************
+
+
+$ ansible-config list # Lists all configurations
+$ ansible-config view # Shows the current config file
+$ ansible-config dump # Shows the current settings
+
+$ export ANSIBLE_GATHERING=explicit
+$ ansible-config dump | grep GATHERING
+
+
